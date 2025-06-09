@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 import chromadb
 from openai import OpenAI
-from chromadb.utils import embedding_functions\
+from chromadb.utils import embedding_functions
 from sentence_transformers import SentenceTransformer
 
 
