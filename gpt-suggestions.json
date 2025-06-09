@@ -1,0 +1,103 @@
+{
+  "metadata": {
+    "description": "Configuration for automated code modifications using Spoon",
+    "version": "1.0",
+    "gpt_prompt": "Please suggest improvements for the following Java code..."
+  },
+  "classes": [
+    {
+      "name": "spoon.NumberFormatException",
+      "extends": "java.lang.RuntimeException",
+      "implements": ["java.io.Serializable"],
+      "methods": [
+        {
+          "action": "add",
+          "name": "validateNumberFormat",
+          "params": [
+            {"type": "String", "name": "input"},
+            {"type": "String", "name": "pattern"}
+          ],
+          "return_type": "boolean",
+          "body": "return input.matches(pattern);",
+          "modifiers": ["public"],
+          "javadoc": "Validates if input matches the specified number pattern"
+        },
+        {
+          "action": "modify",
+          "name": "parseNumber",
+          "changes": [
+            {
+              "type": "add_parameter",
+              "param": {"type": "boolean", "name": "strictMode"}
+            },
+            {
+              "type": "insert_code",
+              "location": "beginning",
+              "code": "if (strictMode && input == null) throw new IllegalArgumentException(\"Input cannot be null in strict mode\");"
+            }
+          ]
+        }
+      ],
+      "fields": [
+        {
+          "action": "add",
+          "type": "String",
+          "name": "defaultPattern",
+          "value": "\"\\\\d+\"",
+          "modifiers": ["private", "static", "final"]
+        }
+      ]
+    },
+    {
+      "name": "spoon.CurrencyFormatter",
+      "extends": "spoon.BaseFormatter",
+      "methods": [
+        {
+          "action": "override",
+          "name": "format",
+          "params": [
+            {"type": "Object", "name": "value"}
+          ],
+          "return_type": "String",
+          "body": "// GPT-suggested implementation\nreturn String.format(\"%,.2f\", Double.parseDouble(value.toString()));",
+          "modifiers": ["public"],
+          "annotations": ["@Override"]
+        }
+      ],
+      "gpt_suggestions": [
+        {
+          "file": "CurrencyFormatter.java",
+          "suggestion": "Consider adding locale support for internationalization",
+          "priority": "high"
+        }
+      ]
+    }
+  ],
+  "global_changes": [
+    {
+      "type": "import",
+      "class": "java.util.regex.Pattern",
+      "target_classes": ["spoon.NumberFormatException"]
+    },
+    {
+      "type": "log_add",
+      "framework": "SLF4J",
+      "level": "debug"
+    }
+  ],
+  "call_chains": [
+    {
+      "source_method": "spoon.NumberFormatException.validateNumberFormat",
+      "target_method": "spoon.CurrencyFormatter.format",
+      "insertion_point": "after_call",
+      "condition": "input != null"
+    }
+  ],
+  "validation": {
+    "compile_check": true,
+    "test_run": {
+      "class": "spoon.NumberFormatExceptionTest",
+      "method": "testChanges"
+    }
+  }
+}
