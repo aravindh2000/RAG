@@ -4,7 +4,8 @@ import requests
 from dotenv import load_dotenv
 import chromadb
 from openai import OpenAI
-from chromadb.utils import embedding_functions
+from chromadb.utils import embedding_functions\
+from sentence_transformers import SentenceTransformer
 
 
 load_dotenv()
@@ -72,7 +73,7 @@ for doc in documents:
 #     embedding = response.data[0].embedding
 #     print("==== Generating embeddings... ====")
 #     return embedding
-from sentence_transformers import SentenceTransformer
+
 model = SentenceTransformer('all-MiniLM-L6-v2')
 # embeddings = model.encode("Your text here")
 
