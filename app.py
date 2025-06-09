@@ -162,8 +162,7 @@ def generate_response(question, relevant_chunks):
     return answer
 
 
-# Example query
-# query_documents("tell me about AI replacing TV writers strike.")
+
 # Example query and response generation
 question = """
 Caught NumberFormatException!
